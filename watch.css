@@ -1,0 +1,172 @@
+body {
+       margin: 5;
+     }
+
+     
+h1 {
+     color: violet
+   }
+ 
+
+h2 {
+     color: aquamarine
+   }
+
+
+h2:hover {
+           transform: scale(1.01);
+         }
+
+
+h1:hover {
+            transform: scale(1.01);
+         }
+
+
+
+
+
+
+/* Special styling for different image groups */
+.rolexsymbol {
+                border-radius: 50%;
+                /* Circular for symbol */
+                border: 3px solid gold;
+             }    
+
+.rolexsymbol:hover {
+                     transform: scale(1.5);
+                   }
+
+.firstrow {
+            display: flex;
+            flex: wrap;
+            gap: 7px;
+          }
+
+.secondrow {
+             display: flex;
+             flex: wrap;
+             gap: 7px;
+            }
+
+.image1:hover {
+                transform: scale(1.05);
+              }
+
+.image2:hover {
+                transform: scale(1.05); 
+              }
+
+.image3:hover {
+                transform: scale(1.05);
+              }
+
+.image4:hover {
+                transform: scale(1.05);
+              }
+
+
+
+.image5:hover {
+                transform: scale(1.05);
+              }
+
+.image6:hover {
+                transform: scale(1.05);
+              }
+
+
+
+
+.symbolfirstrow 
+                {
+                   display: flex;
+                   flex: wrap;
+                   gap: 7px;
+                }
+
+.symbolsecondrow 
+                 {
+                   display: flex;
+                   flex: wrap;
+                   gap: 7px;
+                 }
+
+.symbol1:hover {
+                 transform: scale(1.05);
+               }
+
+.symbol2:hover {
+                 transform: scale(1.05);
+               }
+
+.symbol3:hover {
+                 transform: scale(1.05);
+               }
+
+.symbol4:hover {
+                transform: scale(1.05);
+               }
+
+.symbol5:hover {
+                transform: scale(1.05);
+               }
+
+.symbol6:hover {
+                  transform: scale(1.05);
+               }
+
+
+
+
+
+.ceo {
+        display: flex;
+        flex: wrap;
+        gap: 7px;
+     }
+
+.ceo1:hover {
+              transform: scale(1.05);
+            }
+
+.ceo2:hover {
+              transform: scale(1.05);
+            }
+
+.ceo3:hover {
+              transform: scale(1.05);
+            }
+
+
+
+
+
+.pceo {
+        display: flex;
+        flex: wrap;
+        gap: 10px;
+      }
+
+.p1ceo:hover {
+               transform: scale(1.05);
+             }
+
+.p2ceo:hover {
+               transform: scale(1.05);
+             }
+
+.p3ceo:hover {
+               transform: scale(1.05);
+             }
+
+
+
+
+
+.text:hover {
+              transform: scale(1.1);
+            }
+
+    
