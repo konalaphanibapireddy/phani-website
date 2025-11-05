@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tic Tac Toe</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@700&family=Playfair+Display:ital,wght@1,700&display=swap');
+  :root {
+    color-scheme: light dark;
+    --surface: rgba(255, 255, 255, 0.14);
+    --surface-strong: rgba(255, 255, 255, 0.22);
+    --border: rgba(255, 255, 255, 0.28);
+    --shadow: rgba(0, 0, 0, 0.25);
+    --x: #37d6ff;
+    --o: #ff6ad5;
+    --ok: #58e38b;
+    --warn: #ffd166;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    display: grid;
+    place-items: center;
+    background: linear-gradient(120deg, #0f172a, #1e293b 40%, #0b1324 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Animated gradient orbs */
+  body::before,
+  body::after {
+    content: "";
+    position: absolute;
+    inset: -20% -10% auto auto;
+    width: 60vmax;
+    height: 60vmax;
+    background: radial-gradient(circle at 30% 30%, rgba(55, 214, 255, 0.35), transparent 55%),
+                radial-gradient(circle at 70% 70%, rgba(255, 106, 213, 0.28), transparent 55%);
+    filter: blur(40px);
+    animation: float 18s ease-in-out infinite alternate;
+    pointer-events: none;
+    transform: translate3d(0,0,0);
+  }
+  body::after {
+    inset: auto auto -25% -10%;
+    width: 55vmax;
+    height: 55vmax;
+    background: radial-gradient(circle at 40% 40%, rgba(88, 227, 139, 0.28), transparent 55%),
+                radial-gradient(circle at 70% 20%, rgba(255, 209, 102, 0.22), transparent 55%);
+    animation-duration: 22s;
+  }
+  @keyframes float { to { transform: translate3d(6%, -4%, 0) rotate(3deg); } }
+
+  .game {
+    width: min(92vw, 520px);
+    display: grid;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 30px var(--shadow);
+    backdrop-filter: saturate(140%) blur(10px);
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .title { margin: 0; font-size: clamp(20px, 4vw, 28px); letter-spacing: 0.25px; font-style: italic; font-family: "Playfair Display", serif; }
+  .status {
+    font-size: clamp(14px, 3.2vw, 18px);
+    opacity: 0.95;
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface-strong);
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    aspect-ratio: 1/1;
+  }
+
+  .cell {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    font-size: clamp(40px, 12vw, 64px);
+    border: 1px solid var(--border);
+    background: color-mix(in oklab, var(--surface) 60%, transparent);
+    color: #e5e7eb;
+    cursor: pointer;
+    border-radius: 16px;
+    transition: transform 140ms ease, background-color 140ms ease, color 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+    user-select: none;
+    text-shadow: 0 8px 20px rgba(0,0,0,0.35);
+  }
+
+  .cell:disabled { cursor: not-allowed; opacity: 0.95; }
+  .cell:not(:disabled):hover { transform: translateY(-3px); border-color: color-mix(in oklab, var(--border) 60%, white 10%); box-shadow: 0 12px 28px var(--shadow); }
+
+  .cell[data-value="X"] { color: var(--x); }
+  .cell[data-value="O"] { color: var(--o); }
+
+  .controls { display: flex; gap: 10px; }
+  .btn {
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface-strong);
+    color: #e5e7eb;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 140ms ease, transform 140ms ease, box-shadow 140ms ease;
+    backdrop-filter: saturate(140%) blur(6px);
+  }
+  .btn:hover { box-shadow: 0 10px 24px var(--shadow); transform: translateY(-1px); }
+  .btn:active { transform: translateY(1px); }
+
+  /* Green style for Restart button */
+  #reset.btn {
+    background: color-mix(in oklab, var(--ok) 55%, transparent);
+    border-color: color-mix(in oklab, var(--ok) 70%, black 0%);
+    color: #072b16;
+    text-shadow: none;
+  }
+  #reset.btn:hover {
+    background: color-mix(in oklab, var(--ok) 70%, transparent);
+    box-shadow: 0 12px 28px rgba(88, 227, 139, 0.35);
+  }
+  #reset.btn:active { background: color-mix(in oklab, var(--ok) 80%, black 6%); }
+
+  /* Red style for Swap Start button */
+  #swap.btn {
+    --red: #ef4444;
+    background: color-mix(in oklab, var(--red, #ef4444) 55%, transparent);
+    border-color: color-mix(in oklab, var(--red, #ef4444) 70%, black 0%);
+    color: #380a0a;
+    text-shadow: none;
+  }
+  #swap.btn:hover {
+    background: color-mix(in oklab, var(--red, #ef4444) 70%, transparent);
+    box-shadow: 0 12px 28px rgba(239, 68, 68, 0.35);
+  }
+  #swap.btn:active { background: color-mix(in oklab, var(--red, #ef4444) 80%, black 6%); }
+
+  /* Scoreboard */
+  .scoreboard {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: 8px 12px;
+    align-items: center;
+  }
+  .pill {
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface-strong);
+    font-weight: 700;
+  }
+  .pill.x { color: var(--x); }
+  .pill.o { color: var(--o); }
+  .pill.d { color: var(--warn); }
+
+  .win {
+    box-shadow: 0 0 0 2px color-mix(in oklab, currentColor 30%, transparent) inset,
+                0 0 20px color-mix(in oklab, currentColor 55%, transparent);
+    background: color-mix(in oklab, var(--surface) 75%, currentColor 10%);
+    animation: pulse 800ms ease-in-out 3;
+  }
+  @keyframes pulse {
+    0% { transform: translateY(-3px); }
+    50% { transform: translateY(-1px) scale(1.02); }
+    100% { transform: translateY(-3px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cell, .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+<main class="game" aria-label="Tic Tac Toe Game">
+  <div class="header">
+    <h1 class="title">Tic Tac Toe</h1>
+    <div id="status" class="status" role="status" aria-live="polite">Player X's turn</div>
+  </div>
+
+  <div id="board" class="board" role="grid" aria-label="Tic Tac Toe Board">
+    <button class="cell" role="gridcell" aria-label="Cell 1" data-index="0"></button>
+    <button class="cell" role="gridcell" aria-label="Cell 2" data-index="1"></button>
+    <button class="cell" role="gridcell" aria-label="Cell 3" data-index="2"></button>
+    <button class="cell" role="gridcell" aria-label="Cell 4" data-index="3"></button>
+    <button class="cell" role="gridcell" aria-label="Cell 5" data-index="4"></button>
+    <button class="cell" role="gridcell" aria-label="Cell 6" data-index="5"></button>
+    <button class="cell" role="gridcell" aria-label="Cell 7" data-index="6"></button>
+    <button class="cell" role="gridcell" aria-label="Cell 8" data-index="7"></button>
+    <button class="cell" role="gridcell" aria-label="Cell 9" data-index="8"></button>
+  </div>
+
+  <div class="controls">
+    <button id="reset" class="btn" type="button" aria-label="Reset Game">Reset</button>
+    <button id="swap" class="btn" type="button" aria-label="Swap Starting Player">Swap Start</button>
+  </div>
+
+  <section class="scoreboard" aria-label="Scoreboard">
+    <div class="pill">Match: <span id="matchNum">1</span>/10</div>
+    <div class="pill x">X Wins: <span id="xWins">0</span></div>
+    <div class="pill o">O Wins: <span id="oWins">0</span></div>
+    <div class="pill d">Draws: <span id="draws">0</span></div>
+    <div class="pill" style="grid-column: 1 / -1;">Series: <span id="seriesStatus">In progress</span></div>
+  </section>
+</main>
+
+<script>
+  (function () {
+    const statusEl = document.getElementById("status");
+    const boardEl = document.getElementById("board");
+    const cells = Array.from(boardEl.querySelectorAll(".cell"));
+    const resetBtn = document.getElementById("reset");
+    const swapBtn = document.getElementById("swap");
+    const matchNumEl = document.getElementById("matchNum");
+    const xWinsEl = document.getElementById("xWins");
+    const oWinsEl = document.getElementById("oWins");
+    const drawsEl = document.getElementById("draws");
+    const seriesStatusEl = document.getElementById("seriesStatus");
+
+    /**
+     * Game state
+     */
+    let board = Array(9).fill("");
+    let currentPlayer = "X";
+    let startingPlayer = "X";
+    let isGameOver = false;
+    let currentMatch = 1;
+    const totalMatches = 10;
+    let xWins = 0;
+    let oWins = 0;
+    let draws = 0;
+
+    const winningCombos = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6]
+    ];
+
+    function setStatus(text) {
+      statusEl.textContent = text;
+    }
+
+    function updateUI() {
+      for (let i = 0; i < cells.length; i++) {
+        const value = board[i];
+        cells[i].textContent = value;
+        if (value) {
+          cells[i].setAttribute("data-value", value);
+        } else {
+          cells[i].removeAttribute("data-value");
+        }
+        cells[i].disabled = Boolean(value) || isGameOver;
+        cells[i].classList.remove("win");
+      }
+    }
+
+    function checkWinner() {
+      for (const [a, b, c] of winningCombos) {
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+          return { winner: board[a], line: [a, b, c] };
+        }
+      }
+      if (board.every(Boolean)) return { draw: true };
+      return null;
+    }
+
+    function handleCellClick(event) {
+      if (isGameOver) return;
+      const index = Number(event.currentTarget.getAttribute("data-index"));
+      if (board[index]) return;
+
+      board[index] = currentPlayer;
+      const result = checkWinner();
+      if (result && result.winner) {
+        isGameOver = true;
+        highlightWin(result.line);
+        updateUI();
+        setStatus(`Player ${result.winner} wins!`);
+        if (result.winner === "X") xWins++; else oWins++;
+        endMatch();
+        return;
+      }
+      if (result && result.draw) {
+        isGameOver = true;
+        updateUI();
+        setStatus("It's a draw!");
+        draws++;
+        endMatch();
+        return;
+      }
+
+      currentPlayer = currentPlayer === "X" ? "O" : "X";
+      updateUI();
+      setStatus(`Player ${currentPlayer}'s turn`);
+    }
+
+    function highlightWin(indices) {
+      indices.forEach(i => cells[i].classList.add("win"));
+    }
+
+    function resetGame() {
+      board = Array(9).fill("");
+      isGameOver = false;
+      currentPlayer = startingPlayer;
+      updateUI();
+      setStatus(`Player ${currentPlayer}'s turn`);
+    }
+
+    function swapStartingPlayer() {
+      startingPlayer = startingPlayer === "X" ? "O" : "X";
+      currentPlayer = startingPlayer;
+      resetGame();
+      setStatus(`Starting player is now ${startingPlayer}`);
+    }
+
+    function updateScoreboard() {
+      matchNumEl.textContent = String(currentMatch);
+      xWinsEl.textContent = String(xWins);
+      oWinsEl.textContent = String(oWins);
+      drawsEl.textContent = String(draws);
+      const remaining = totalMatches - (currentMatch - 1);
+      const leader = xWins === oWins ? "Tied" : (xWins > oWins ? "X leads" : "O leads");
+      seriesStatusEl.textContent = currentMatch > totalMatches
+        ? finalSeriesResult()
+        : `${leader}. ${remaining} left`;
+    }
+
+    function finalSeriesResult() {
+      if (xWins === oWins) return `Final: Draw (${xWins}-${oWins}, Draws ${draws})`;
+      const winner = xWins > oWins ? "X" : "O";
+      return `Final: ${winner} wins series (${xWins}-${oWins}, Draws ${draws})`;
+    }
+
+    function endMatch() {
+      // Update scoreboard for completed match
+      updateScoreboard();
+      // Auto-advance to next match after short delay
+      setTimeout(() => {
+        if (currentMatch >= totalMatches) {
+          // Series complete
+          currentMatch = totalMatches + 1;
+          updateScoreboard();
+          // Lock board; allow manual reset to start over
+          cells.forEach(c => c.disabled = true);
+          setStatus(finalSeriesResult());
+          return;
+        }
+        currentMatch++;
+        // Alternate starting player each match for fairness
+        startingPlayer = startingPlayer === "X" ? "O" : "X";
+        resetGame();
+        updateScoreboard();
+      }, 900);
+    }
+
+    // Event listeners
+    cells.forEach(cell => cell.addEventListener("click", handleCellClick));
+    resetBtn.addEventListener("click", resetGame);
+    swapBtn.addEventListener("click", swapStartingPlayer);
+
+    // Initialize first render
+    updateUI();
+    setStatus(`Player ${currentPlayer}'s turn`);
+    updateScoreboard();
+  })();
+</script>
+</body>
+</html>
+
+
