@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Upload & Manager</title>
+    <link rel="stylesheet" href="pdf.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📄 PDF Upload & Manager</h1>
+            <p class="subtitle">Upload, manage, and access your PDF files</p>
+        </header>
+
+        <div class="upload-section">
+            <div class="upload-box" id="uploadBox">
+                <div class="upload-icon">📤</div>
+                <h3>Upload PDF File</h3>
+                <p>Click or drag and drop your PDF file here</p>
+                <input type="file" id="fileInput" accept=".pdf" hidden>
+                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                    Choose File
+                </button>
+                <p class="file-info" id="fileInfo"></p>
+            </div>
+            <div id="progressContainer" class="progress-container hidden">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p class="progress-text" id="progressText">Uploading...</p>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-number" id="totalFiles">0</div>
+                <div class="stat-label">Total Files</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="maxFiles">2000</div>
+                <div class="stat-label">Maximum Files</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="remainingFiles">2000</div>
+                <div class="stat-label">Remaining Slots</div>
+            </div>
+        </div>
+
+        <div class="search-section">
+            <input type="text" id="searchInput" placeholder="Search PDFs by name..." class="search-input">
+        </div>
+
+        <div class="pdfs-section">
+            <h2>Your PDFs</h2>
+            <div id="pdfsList" class="pdfs-list">
+                <div class="loading">Loading PDFs...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="pdf.js"></script>
+</body>
+</html>
+
