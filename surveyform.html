@@ -1,0 +1,46 @@
+<!--Description: Build a survey form with radio buttons, checkboxes, and a dropdown menu. Group
+them using fieldset and legend.
+Tags Covered: <fieldset>, <legend>,<input type="radio">,
+<input type="checkbox">,<select>,<option>-->
+<html>
+
+<head>
+    <title>survey form</title>
+</head>
+
+<body>
+    <h1>Survey form</h1>
+    <br>
+    <fieldset>
+        <legend>Basic info</legend>
+        <form>
+            <lable for="name">Name:</lable>
+            <input type="text" id="name">
+            <br>
+            <br>
+            <lable for="gender">Gender:</lable>
+            <input type="radio" id="gender">Male
+            <input type="radio" id="gender">Female
+            <br>
+            <br>
+            <label for="hobbies">Hobbies:</label>
+            <input type="checkbox" id="hobbies">Reading
+            <input type="checkbox" id="hobbies">Sports
+            <br>
+            <br>
+            <label for="countries">Country:</label>
+            <select id="countries">
+                <option value="">India</option>
+                <option value="country">Russia</option>
+                <option value="country">America</option>
+                <option value="country">Europe</option>
+                <option value="country">Australia</option>
+            </select>
+            <br>
+            <br>
+            <button type="submit">Submit</button>
+        </form>
+    </fieldset>
+</body>
+
+</html>

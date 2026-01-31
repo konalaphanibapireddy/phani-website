@@ -1,0 +1,76 @@
+<!--Description: Create a Quick Assessment form
+Tags Covered: <form>, <input>, <textarea>, <label>, <button>
+-->
+<html>
+
+<head>
+    <title>Contact Form</title>
+</head>
+
+<body>
+    <h1>Quick Assessment</h1>
+    <p>Text your motivation level:</p>
+    <fieldset>
+        <legend>How commited are you to learning web development</legend>
+        <br>
+        <form>
+
+            <div>
+                <strong>Experience level:</strong>
+            </div>
+            <br>
+            <div>
+                <input type="radio" name="experience" value="beginner">
+                Complete Beginner<br>
+                <input type="radio" name="experience" value="htmlcss">
+                Know some HTML/CSS<br>
+                <input type="radio" name="experience" value="programming">
+                Have programming experience<br>
+            </div>
+            <br>
+            <div>
+                <strong>Learning Goals(check all that apply):</strong>
+            </div>
+            <br>
+            <div>
+                <input type="checkbox" name="goals" value="carrer">
+                Carrer change<br>
+                <input type="checkbox" name="goals" value="freelaunce">
+                Freelaunce work<br>
+                <input type="checkbox" name="goals" value="personal">
+                Personal hobby<br>
+                <input type="checkbox" name="goals" value="business">
+                Start my own Business<br>
+            </div>
+            <br>
+            <div>
+                <strong>
+                    <lable for="learning_style">Preffered learning style:</lable>
+                </strong>
+            </div>
+            <br>
+            <select id="learning_style" name="style selection">
+                <option value="">choose your preference</option>
+                <option value="visual">Visual option</option>
+                <option value="auditory">Auditory option</option>
+                <option value="reading">Reading/Writing option</option>
+                <option value="kinesthetic">Kinesthetic</option>
+            </select>
+            <br>
+            <br>
+            <div>
+                <strong>
+                    <lable for="comment">Additional comments:</lable>
+                </strong>
+            </div>
+            <br>
+            <textarea id="comment" rows="3" cols="50"
+                placeholder="Tell us about your web development goals..."></textarea>
+            <br>
+            <br>
+            <button type="submit">Submit Assessment</button>
+        </form>
+    </fieldset>
+</body>
+
+</html>
