@@ -247,7 +247,9 @@ h1 {
 .row:nth-child(20) .time {
     background: #ff9f43;
 }
-
+.row:nth-child(21) .time {
+    background: #feca57;
+}
 
 /* Activity Column */
 
@@ -330,8 +332,12 @@ h1 {
 .revision {
     background: #d63031;
 }
-
-
+.sleep {
+    background: purple;
+}
+.dinner {
+    background: green;
+}
 /* Current Activity Highlight */
 
 .current {
