@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday Best Friend</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .card {
+      text-align: center;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      max-width: 500px;
+      animation: pop 1s ease;
+    }
+
+    h1 {
+      color: #ff4081;
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 20px;
+      color: #444;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      background: #ff4081;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #e91e63;
+      transform: scale(1.05);
+    }
+
+    .surprise {
+      display: none;
+      margin-top: 20px;
+      font-size: 22px;
+      color: #673ab7;
+      font-weight: bold;
+    }
+
+    @keyframes pop {
+      from {
+        transform: scale(0.7);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .balloon {
+      position: absolute;
+      bottom: -100px;
+      width: 50px;
+      height: 70px;
+      background: red;
+      border-radius: 50%;
+      animation: float 6s linear infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-120vh); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>🎂 Happy Birthday! 🎉</h1>
+    <p>To my best friend,  
+    may your day be filled with happiness, laughter, and unforgettable memories.  
+    You are truly special to me! 💖</p>
+
+    <button onclick="showWish()">Click for Surprise 🎁</button>
+    <div class="surprise" id="wish">
+      🌟 Wishing you success, joy, and endless smiles always! 🌟
+    </div>
+  </div>
+
+  <script>
+    function showWish() {
+      document.getElementById("wish").style.display = "block";
+      createBalloons();
+    }
+
+    function createBalloons() {
+      for (let i = 0; i < 10; i++) {
+        let balloon = document.createElement("div");
+        balloon.classList.add("balloon");
+        balloon.style.left = Math.random() * window.innerWidth + "px";
+        balloon.style.backgroundColor = 
+          `hsl(${Math.random() * 360 
