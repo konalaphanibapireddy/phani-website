@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Heart Animation</title>
+<title>Best Friend Heart Animation</title>
 
 <style>
 *{
@@ -40,9 +40,9 @@ body{
     transform:rotate(-45deg);
     animation:beat 1s infinite;
     box-shadow:
-    0 0 30px #ff1744,
-    0 0 60px #ff1744,
-    0 0 90px #ff1744;
+        0 0 30px #ff1744,
+        0 0 60px #ff1744,
+        0 0 90px #ff1744;
 }
 
 .heart::before,
@@ -104,12 +104,15 @@ body{
 .message{
     position:absolute;
     bottom:60px;
+    width:100%;
+    text-align:center;
     color:white;
-    font-size:34px;
+    font-size:28px;
     font-weight:bold;
     letter-spacing:2px;
     text-shadow:0 0 15px #ff1744;
     animation:fade 2s infinite alternate;
+    padding:0 10px;
 }
 
 @keyframes fade{
@@ -128,7 +131,7 @@ body{
 <div class="heart"></div>
 
 <div class="message">
-❤️ TO MY BEST FRIEND😊😊❤️
+😊 TO MY BEST FRIEND 😊
 </div>
 
 <script>
@@ -142,13 +145,9 @@ function createHeart(){
     heart.innerHTML="❤";
 
     heart.style.left=Math.random()*window.innerWidth+"px";
-
     heart.style.bottom="-30px";
-
     heart.style.fontSize=(15+Math.random()*35)+"px";
-
     heart.style.animationDuration=(4+Math.random()*4)+"s";
-
     heart.style.color=`hsl(${340+Math.random()*20},100%,60%)`;
 
     document.body.appendChild(heart);
